@@ -18,6 +18,7 @@ class GameLogic:
         self.colors = [(1, 0, 1, 1), (1, 1, 1, 1), (1, 0, 0, 1)]  # Colors: purple, white, red
         self.time_limit = 4.0  # Time limit to display colored buttons
         self.turn = 0  # Counter for the game turns
+        self.life=3 #counter for life points
 
     def start_game(self):
         # Step 1: Generate a new sequence of colored buttons
@@ -54,14 +55,16 @@ class GameLogic:
                 if self.buttons.index(instance) in self.sequence:
                     # If the button index is in the correct sequence, colors the button purple
                     instance.background_color = (1, 0, 1, 1)
-                    self.dispatch('on_button_colored',
-                                  instance)  # Dispatch an event 'on_button_colored' (a front end function) to notify the front-end that a button has been colored with the given instance.
+                    self.dispatch('on_button_colored',instance)  # Dispatch an event 'on_button_colored' (a front end function) to notify the front-end that a button has been colored with the given instance.
                 else:
                     # If the button index is not in the correct sequence, colors the button red
                     instance.background_color = (1, 0, 0, 1)
-                    self.dispatch('on_button_colored',
-                                  instance)  # # Dispatch an event 'on_button_colored' (a front end function) to notify the front-end that a button has been colored with the given instance.
+                    self.dispatch('on_button_colored',instance)  # # Dispatch an event 'on_button_colored' (a front end function) to notify the front-end that a button has been colored with the given instance.
                     time.sleep(1)  # Pauses execution for 1 second
+                    instance.background_color = (1, 1, 1, 1)
+                    self.dispatch('on_button_colored',instance)
+                    self.life -=1
+                if self.life == 0 :
                     self.display_end_game()  # Displays the end game screen
 
                 if len(self.current_sequence) == self.num:
@@ -86,6 +89,7 @@ class GameLogic:
                 self.lines += 1
             else:
                 self.cols += 1
+        self.turn +=1
         self.generate_sequence()
 
     def display_end_game(self):
