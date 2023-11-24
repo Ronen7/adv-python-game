@@ -1,12 +1,19 @@
 from kivy.app import App
-from screens.menu_screen import MenuScreen
+from kivy.uix.screenmanager import ScreenManager
+from kivy.core.window import Window
 from screens.game_screen import GameScreen
-from screens.score_screen import ScoreScreen
+from screens.menu_screen import MainMenuScreen
 
-class MemoryTileApp(App):
+
+class MemoryGameApp(App):
     def build(self):
-        # This can be changed to load a different screen as the starting screen.
-        return MenuScreen()
+        Window.size = (360, 640)
+        sm = ScreenManager()
+        sm.add_widget(MainMenuScreen(name='menu'))
+        sm.add_widget(GameScreen(name='game'))
+        Window.clearcolor = (1, 1, 1, 1)
+        return sm
+
 
 if __name__ == '__main__':
-    MemoryTileApp().run()
+    MemoryGameApp().run()
