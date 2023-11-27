@@ -1,6 +1,8 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 from kivy.core.window import Window
+import sys
+sys.path.append('/Path/to/adv-python-game-main/src/frontend')
 from screens.game_screen import GameScreen
 from screens.menu_screen import MainMenuScreen
 

@@ -6,6 +6,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Color, Rectangle
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
+import sys
+sys.path.append('/Path/to/adv-python-game-main')
 from src.backend.game_logic import GameLogic
 from src.backend.data_management import DataManagement
 
@@ -40,7 +42,7 @@ class GameScreen(Screen):
             font_name=font2_path,
             font_size=30,
         )
-        back_button.bind(on_press=self.go_back)
+        back_button.bind(on_press=self.go_to_menu)
 
         button_layout.add_widget(back_button)
 
@@ -130,6 +132,9 @@ class GameScreen(Screen):
             self.check_sequence_completion()
             self.game_logic.hide_sequence()
         elif result['status'] == 'wrong':
+            if self.game_logic.scheduled_event:
+                Clock.unschedule(self.game_logic.scheduled_event)
+                self.game_logic.scheduled_event = None
             for i in range(self.game_logic.cols*self.game_logic.cols):
                 self.grid.children[len(self.grid.children) - 1 - i].background_color = (1, 1, 1, 1)
             instance.background_color = (1, 0, 0, 1)
@@ -145,7 +150,7 @@ class GameScreen(Screen):
             Clock.schedule_once(lambda dt: self.start_new_sequence(), 1)
 
     def start_new_sequence(self):
-        if self.game_logic.lives == 0:
+        if self.game_logic.lives <= 0:
             self.save_score()
             self.update_labels()
             self.show_lost_popup()
@@ -157,10 +162,10 @@ class GameScreen(Screen):
 
     def update_labels(self):
         self.points_label.text = f'Points: {self.game_logic.points}'
+        if self.game_logic.lives < 0:
+            self.game_logic.lives = 0
         self.lives_label.text = f'Lives: {self.game_logic.lives}'
 
-    def go_back(self, instance):
-        self.manager.current = 'menu'
 
     def show_lost_popup(self):
         main_menu_screen = self.manager.get_screen('menu')
@@ -175,10 +180,13 @@ class GameScreen(Screen):
         self.game_logic.reset_game()
         self.update_grid_layout()
         self.update_labels()
-        self.game_logic.start_game()
+        self.game_logic.next_sequence()
         self.lost_popup.dismiss()
 
     def go_to_menu(self, instance=None):
+        self.game_logic.reset_game()
+        self.update_grid_layout()
+        self.update_labels()
         self.manager.current = 'menu'
         self.lost_popup.dismiss()
 

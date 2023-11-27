@@ -7,10 +7,12 @@ from kivy.graphics import Color, Line
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 from kivy.uix.progressbar import ProgressBar
+import sys
+sys.path.append('/Path/to/adv-python-game-main')
 from src.backend.data_management import DataManagement
 
-font1_path = 'assets/fonts/Arcade1.TTF'
-font2_path = 'assets/fonts/Arcade2.ttf'
+font1 = 'assets/fonts/Arcade1.TTF'
+font2 = 'assets/fonts/Arcade2.ttf'
 
 
 class MainMenuScreen(Screen):
@@ -23,7 +25,7 @@ class MainMenuScreen(Screen):
 
         game_name = Label(text='MEMORY GAME',
                           size_hint_y=0.01,
-                          font_name=font1_path,
+                          font_name=font1,
                           font_size=65)
         game_name.color = (0, 0, 0, 1)
         layout.add_widget(game_name)
@@ -45,7 +47,7 @@ class MainMenuScreen(Screen):
             background_color=(0.7, 0.7, 0.7, 1),
             color=(0, 0, 0, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
-            font_name=font1_path,
+            font_name=font1,
             font_size=40,
             on_press=self.show_info
         )
@@ -64,7 +66,7 @@ class MainMenuScreen(Screen):
             font_size=28,
             color=(0, 0, 0, 1),
             markup=True,
-            font_name=font2_path,
+            font_name=font2,
         )
         layout.add_widget(self.highscores_label)
 
@@ -74,14 +76,13 @@ class MainMenuScreen(Screen):
             hint_text='ENTER  PLAYER  NAME',
             hint_text_color=(0, 0, 0, 1),
             multiline=False,
-            font_size=35,
-            font_name=font1_path,
+            font_size=30,
+            font_name=font1,
             size_hint=(0.9, 0.15),
             background_color=(0.7, 0.7, 0.7, 1),
             foreground_color=(0, 0, 0, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
             halign='center',
-            padding_y=(10, 10),
         )
         layout.add_widget(self.player_name_input)
 
@@ -93,7 +94,7 @@ class MainMenuScreen(Screen):
             background_color=(0.7, 0.7, 0.7, 1),
             color=(0, 0, 0, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
-            font_name=font1_path,
+            font_name=font1,
             font_size=40,
         )
 
@@ -142,7 +143,7 @@ class MainMenuScreen(Screen):
             title='Game Information',
             title_align='center',
             title_color=(1, 1, 1, 1),
-            title_font=font2_path,
+            title_font=font2,
             title_size=25,
             separator_color=(0.7, 0.7, 0.7, 1),
             content=content,

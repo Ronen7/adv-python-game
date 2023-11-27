@@ -19,10 +19,6 @@ class GameLogic:
     def set_buttons(self, buttons):
         self.buttons = buttons
 
-    def start_game(self):
-        self.generate_sequence()
-        self.display_sequence()
-
     def reset_game(self):
         self.sequence = []
         self.sequence_index = 0
